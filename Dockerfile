@@ -7,5 +7,4 @@ ADD scripts/ .
 ADD google-ads.yaml .
 RUN chmod a+x run-docker.sh
 ENTRYPOINT ["./run-docker.sh"]
-ENV GOOGLE_APPLICATION_CREDENTIALS service_account.json
 CMD ["google_ads_queries/*/*.sql", "bq_queries", "google-ads.yaml"]
