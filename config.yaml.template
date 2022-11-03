@@ -12,7 +12,7 @@ gaarf:
       end_date: ":YYYYMMDD-1"
 gaarf-bq:
   project: YOUR-BQ-PROJECT
-  target: urp
   params:
     macro:
       bq_dataset: urp
+      output_dataset: urp_output
