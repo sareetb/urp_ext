@@ -36,6 +36,8 @@
     "hooks": {
       "prebuild": {
         "commands": ["chmod 777 ./setup/setup_cloud_storage.sh", "./setup/setup_cloud_storage.sh"]
-      }
+      },
+      "postcreate": ["chmod 777 ./setup/setup_cloud_scheduling.sh", "./setup/setup_cloud_scheduling.sh"]
+
     }
   }
