@@ -7,5 +7,6 @@ ADD scripts/ .
 ADD google-ads.yaml .
 ADD config.yaml .
 RUN chmod a+x run-docker.sh
-ENTRYPOINT ["./run-docker.sh"]
-CMD ["google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"]
+# ENTRYPOINT ["./run-docker.sh"]
+# CMD ["google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"]
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 server:app
