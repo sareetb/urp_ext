@@ -16,4 +16,5 @@ gaarf-bq:
     macro:
       bq_dataset: urp
       output_dataset: urp_output
-      
+      target_dataset: urp_target
+      legacy_dataset: urp_legacy
