@@ -8,4 +8,4 @@ ADD google-ads.yaml .
 ADD config.yaml .
 RUN chmod a+x run-docker.sh
 ENTRYPOINT ["./run-docker.sh"]
-CMD ["google_ads_queries/*/*.sql", "bq_queries", "google-ads.yaml"]
+CMD ["google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"]
