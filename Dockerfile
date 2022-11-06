@@ -6,6 +6,7 @@ ADD bq_queries/ bq_queries/
 ADD scripts/ .
 ADD google-ads.yaml .
 ADD config.yaml .
+ADD main.py .
 RUN chmod a+x run-docker.sh
 # ENTRYPOINT ["./run-docker.sh"]
 # CMD ["google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"]
