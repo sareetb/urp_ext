@@ -16,3 +16,7 @@ use_proto_plus: 'True'
 echo "Editing config.yaml file..."
 sed -i 's/YOUR-BQ-PROJECT/'${GOOGLE_CLOUD_PROJECT}'/g' config.yaml
 sed -i 's/MCC-ID/'${MCC_ID}'/g' config.yaml
+
+
+cat ./google-ads.yaml
+cat ./config.yaml
