@@ -4,7 +4,7 @@ bq_queries=$2
 ads_yaml=$3
 echo ${GOOGLE_CLOUD_PROJECT}
 echo $GOOGLE_CLOUD_PROJECT
-storage_path=gs://${GOOGLE_CLOUD_PROJECT}-urp
+storage_path=gs://one-click-367809-urp
 
 gaarf $ads_queries -c=$storage_path/config.yaml --ads-config=$storage_path/$ads_yaml
 python3 conv_lag_adjustment.py -c=config.yaml
