@@ -10,7 +10,7 @@ client_id: ${OAUTH_CLIENT_ID}
 client_secret: ${OAUTH_CLIENT_SECRET}
 refresh_token: ${REFRESH_TOKEN}
 developer_token: ${DEVELOPER_TOKEN}
-use_proto_plus: 'True'
+use_proto_plus: true
 " >> google-ads.yaml
 
 echo "Editing config.yaml file..."
