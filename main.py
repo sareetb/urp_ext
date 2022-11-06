@@ -21,6 +21,7 @@ def index():
 
     subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
 
+    return ("", 204)
 @app.route("/test", methods=["POST"])
 def test():    
     return "yo yo yo"
