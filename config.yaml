@@ -18,3 +18,5 @@ gaarf-bq:
       output_dataset: urp_output
       target_dataset: urp_target
       legacy_dataset: urp_legacy
+    template:
+      cohort_days: 0,1,3,5,7,14,30
