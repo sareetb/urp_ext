@@ -4,7 +4,11 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["GET"])
+def up():
+    return ("server up", 204)
+
+@app.route("/run-urp", methods=["POST"])
 def index():
     envelope = request.get_json()
     if not envelope:
@@ -22,9 +26,10 @@ def index():
     subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
 
     return ("", 204)
-@app.route("/test", methods=["POST"])
+
+@app.route("/test", methods=["GET"])
 def test():    
-    return "yo yo yo"
+    return ("yo yo yo", 200)
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=int(os.environ.get("PORT", 8080)))

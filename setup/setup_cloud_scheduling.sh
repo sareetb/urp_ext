@@ -1,12 +1,27 @@
+#!/bin/bash
+
 COLOR='\033[0;36m'
-echo -n -e "${COLOR}This is the Service Url: ${SERVICE_URL}"
-# gcloud scheduler jobs create pubsub daily-data-refresh --schedule="0 4 * * *" --topic=urp-schedules --message-body="{"trigger":true}" --time-zone="Israel"
-# gcloud iam service-accounts create urp-ext-service-account --display-name "urp-ext-service"
-# gcloud run services add-iam-policy-binding urp \
-#    --member=serviceAccount:urp-ext-service-account@fit-sanctum-353111.iam.gserviceaccount.com \
-#    --role=roles/run.invoker
-# gcloud pubsub topics create urp-schedules
-# gcloud projects add-iam-policy-binding fit-sanctum-353111 \
-#      --member=serviceAccount:service-683864013084@gcp-sa-pubsub.iam.gserviceaccount.com \
-#      --role=roles/iam.serviceAccountTokenCreator
-# gcloud alpha bq datasets create urp
+service_account_name="urp-ext-service"
+service_account_email="$service_account_name@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com"
+topic_name="urp-schedules"
+subscription="urp-trigger-sub"
+
+echo -n -e "${COLOR}Creating Service Account..."
+
+gcloud iam service-accounts create $service_account_name --display-name $service_account_name 
+gcloud run services add-iam-policy-binding urp \
+   --member=serviceAccount:$service_account_email \
+   --role=roles/run.invoker
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+     --member=serviceAccount:$service_account_email\
+     --role=roles/iam.serviceAccountTokenCreator
+
+echo -n -e "${COLOR}Creating PubSub scheduler..."
+
+gcloud pubsub topics create $topic_name
+gcloud scheduler jobs create pubsub daily-data-refresh --schedule="0 4 * * *" --topic=$topic_name --message-body="{'trigger':true}" --time-zone="Israel"
+# Configure the push subscription
+gcloud pubsub subscriptions create $subscription \
+ --topic=$topic_name \
+ --push-endpoint=${SERVICE_URL}/run-urp \
+ --push-auth-service-account=$service_account_email \
