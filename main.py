@@ -1,5 +1,6 @@
 import os
 import subprocess
+import yaml
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -30,9 +31,19 @@ def index():
 
     return ("", 204)
 
-@app.route("/test", methods=["GET"])
-def test():    
-    return ("yo yo yo", 200)
+@app.route("/get-dashboard-url", methods=["GET"])
+def get_dashboard_url():
+    with open("config.yaml", 'r') as f:
+        config_data = yaml.load(f, Loader=yaml.FullLoader)
+        dashboard_data = config_data.get('dashboard')
+    
+    dashboard_url = dashboard_data.get('url')
+    if dashboard_url:
+        return (dashboard_url, 200)
+    
+    else:
+        return ("Dashboard URL doesn't exist", 400)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=int(os.environ.get("PORT", 8080)))
