@@ -22,9 +22,11 @@ def index():
         return f"Bad Request: {msg}", 400
 
     pubsub_message = envelope["message"]
-    print("Pub/Sub request recieved. Running URP")
+    print(pubsub_message)
     
-    subprocess.check_call(["scripts/run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
+    print("Pub/Sub request recieved. Running URP")
+
+    subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
 
     return ("", 204)
 
