@@ -23,5 +23,6 @@ gcloud scheduler jobs create pubsub daily-data-refresh --schedule="0 4 * * *" --
 # Configure the push subscription
 gcloud pubsub subscriptions create $subscription \
  --topic=$topic_name \
+ --ack-deadline=600 \
  --push-endpoint=${SERVICE_URL}/run-urp \
  --push-auth-service-account=$service_account_email \

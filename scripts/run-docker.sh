@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "TRIGGEREDDDDDDDDDDDDDDDDD"
 ads_queries=$1
 bq_queries=$2
 ads_yaml=$3

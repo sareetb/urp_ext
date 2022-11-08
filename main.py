@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def up():
-    return ("server up", 204)
+    return ("server up", 200)
 
 @app.route("/run-urp", methods=["POST"])
 def index():
@@ -22,8 +22,9 @@ def index():
         return f"Bad Request: {msg}", 400
 
     pubsub_message = envelope["message"]
-
-    subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
+    print("Pub/Sub request recieved. Running URP")
+    
+    subprocess.check_call(["scripts/run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
 
     return ("", 204)
 
