@@ -20,7 +20,7 @@ gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
 echo -n -e "${COLOR}Creating PubSub scheduler..."
 
 gcloud pubsub topics create $topic_name
-gcloud scheduler jobs create pubsub daily-data-refresh --location=${GOOGLE_CLOUD_REGION} --schedule="0 4 * * *" --topic=$topic_name --message-body="{'trigger':true}" --time-zone="Israel"
+gcloud scheduler jobs create pubsub daily-data-refresh --location="us-central1" --schedule="0 4 * * *" --topic=$topic_name --attributes="TRIGGER=TRUE" --message-body="Triggering URP run" --time-zone="Israel"
 # Configure the push subscription
 gcloud pubsub subscriptions create $subscription \
  --topic=$topic_name \
