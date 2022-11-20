@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.10
 ADD requirements.txt .
 RUN pip install --require-hashes -r requirements.txt
 ADD google_ads_queries/ google_ads_queries/
