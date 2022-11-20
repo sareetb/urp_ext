@@ -22,11 +22,33 @@ _DATASET_ID = "urp_target"
 _BASE_URL = "https://datastudio.google.com/reporting/create?"
 _CONFIG_FILE_PATH = "./config.yaml"
 
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
-def up():
-    return ("server up", 200)
+def home():
+    """Create a Looker dashboard creation link with the Linking API, and return a button
+    that redirects to it."""
+    
+    with open(_CONFIG_FILE_PATH, 'r') as f:
+        config_data = yaml.load(f, Loader=yaml.FullLoader)
+        gaarf_data = config_data.get('gaarf')
+        bq_data = gaarf_data.get('bq')
+
+    project_id = bq_data.get('project')
+
+    dashboard_url = create_url(_REPORT_NAME, _REPORT_ID, project_id, _DATASET_ID, _DATASOURCES_DICT)
+    return f"""<!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>Title of the document</title>
+                    </head>
+                    <body>
+                        <button onclick="window.location.href='{dashboard_url}';">
+                            Create Dashboard
+                        </button>
+                    </body>
+                </html>"""
 
 
 @app.route("/run-urp", methods=["POST"])
@@ -50,19 +72,6 @@ def index():
     subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
 
     return ("", 204)
-
-
-@app.route("/get-dashboard-url", methods=["GET"])
-def get_dashboard_url():
-    with open(_CONFIG_FILE_PATH, 'r') as f:
-        config_data = yaml.load(f, Loader=yaml.FullLoader)
-        gaarf_data = config_data.get('gaarf')
-        bq_data = gaarf_data.get('bq')
-    
-    project_id = bq_data.get('project')
-
-    dashboard_url = create_url(_REPORT_NAME, _REPORT_ID, project_id, _DATASET_ID, _DATASOURCES_DICT)
-    return redirect(dashboard_url, 302)
 
 
 def create_url(report_name, report_id, project_id, dataset_id, _DATASOURCES_DICT):
