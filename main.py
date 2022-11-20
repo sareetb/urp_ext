@@ -29,7 +29,7 @@ app = Flask(__name__)
 def home():
     """Create a Looker dashboard creation link with the Linking API, and return a button
     that redirects to it."""
-    
+
     with open(_CONFIG_FILE_PATH, 'r') as f:
         config_data = yaml.load(f, Loader=yaml.FullLoader)
         gaarf_data = config_data.get('gaarf')
@@ -41,8 +41,14 @@ def home():
     return f"""<!DOCTYPE html>
                 <html>
                     <head>
-                        <title>Title of the document</title>
+                        <title>URP</title>
                     </head>
+                    <p>Click on "Run URP" to manually trigger the queries. </br>Click on "Create Dashboard" to create your private copy of URP dashboard.<p>
+                    <body>
+                        <button onclick="window.location.href='run-urp';alert('Running URP')">
+                            Run URP
+                        </button>
+                    </body>
                     <body>
                         <button onclick="window.location.href='{dashboard_url}';">
                             Create Dashboard
@@ -51,27 +57,18 @@ def home():
                 </html>"""
 
 
-@app.route("/run-urp", methods=["POST"])
-def index():
-    envelope = request.get_json()
-    if not envelope:
-        msg = "no Pub/Sub message received"
-        print(f"error: {msg}")
-        return f"Bad Request: {msg}", 400
-
-    if not isinstance(envelope, dict) or "message" not in envelope:
-        msg = "invalid Pub/Sub message format"
-        print(f"error: {msg}")
-        return f"Bad Request: {msg}", 400
-
-    pubsub_message = envelope["message"]
-    print(pubsub_message)
-    
-    print("Pub/Sub request recieved. Running URP")
-
-    subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
-
+@app.route("/run-urp")
+def run_urp():
+    """Run the URP queries and save results to BQ."""
+    print("Request recieved. Running URP", 204)
     return ("", 204)
+    # try:
+    #     subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
+    #     return ("", 204)
+    # except Exception as e:
+    #     print("Failed running URP", str(e))
+    #     return ("Failed running URP")
+    
 
 
 def create_url(report_name, report_id, project_id, dataset_id, _DATASOURCES_DICT):
