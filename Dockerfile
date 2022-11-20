@@ -1,6 +1,6 @@
 FROM python:3.8
 ADD requirements.txt .
-RUN pip install --require-hashes -r requirements.txt.
+RUN pip install --require-hashes -r requirements.txt
 ADD google_ads_queries/ google_ads_queries/
 ADD bq_queries/ bq_queries/
 ADD scripts/ .
