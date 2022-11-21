@@ -5,18 +5,15 @@ import urllib.parse
 from flask import Flask, request, redirect
 
 _DATASOURCES_DICT = {
-    "ds216": ("approval_statuses", "BQ UAC Disapproval"),
-    "ds217": ("creative_excellence", "BQ UAC Hygiene"),
-    "ds218": ("change_history", "BQ UAC Final Change History"),
-    "ds221": ("cannibalization", "BQ UAC Cannibalization"),
-    "ds277": ("geo_performance", "BQ UAC Geo Performance"),
-    "ds220": ("performance_grouping", "BQ UAC Performance Grouping Changes"),
-    "ds219": ("ad_group_network_split", "BQ UAC Network Splits"),
-    "ds215": ("asset_performance", "BQ UAC Assets")
-
+    "excellence": ("creative_excellence", "UAC Hygiene"),
+    "perf_group": ("performance_grouping", "Performance Grouping Changes"),
+    "network": ("ad_group_network_split", "Network Splits"),
+    "assets": ("asset_performance", "Assets"),
+    "approvals": ("approval_statuses", "Disapprovals"),
+    "changes": ("change_history", "Final Change History")
 }
 
-_REPORT_ID = "f6f81c6c-2da2-4bcc-98ff-58838c8cbba8"
+_REPORT_ID = "187f1f41-16bc-434d-8437-7988bed6e8b9"
 _REPORT_NAME = "New Report"
 _DATASET_ID = "urp_target"
 _BASE_URL = "https://datastudio.google.com/reporting/create?"
@@ -67,11 +64,15 @@ def run_urp():
     except Exception as e:
         print("Failed running URP", str(e))
         return ("Failed running URP")
-    
+
 
 
 def create_url(report_name, report_id, project_id, dataset_id, _DATASOURCES_DICT):
     url = _BASE_URL
+    url_safe_report_name = urllib.parse.quote(report_name)
+
+    url += f"c.mode=edit&c.reportId={report_id}&r.reportName={url_safe_report_name}&ds.*.refreshFields=false&"
+
     for ds_num, ds_data in _DATASOURCES_DICT.items():
         url += create_datasource(project_id, dataset_id, ds_num, ds_data[0], ds_data[1])
 
@@ -88,6 +89,6 @@ def create_datasource(project_id, dataset_id, ds_num, table_id, datasource_name)
           f'&ds.{ds_num}.datasetId={dataset_id}'
           f'&ds.{ds_num}.tableId={table_id}&')
 
-    
+
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=int(os.environ.get("PORT", 8080)))
