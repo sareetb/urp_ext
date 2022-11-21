@@ -26,6 +26,8 @@ App Reporting Pack fetches all necessary data from Ads API and creates a central
 
 1. A new GCP project with billing account attached
 
+1. Join this Google group [TODO]
+
 ## Setup
 
 1. Create an [OAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent), make it of type "**External**"
@@ -55,7 +57,7 @@ Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng)
 
 1. Click on "Run URP" to manually run the queries and create tables for the first time. The queries are then scheduled to run daily automatically
 
-1. Wait a few minutes and click "Create Dashboard". This will create your own private copy of the URP dashboard. Once you are done save the dashboard's URL or bookmark it.
+1. Wait a few minutes and click "Create Dashboard". This will create your own private copy of the URP dashboard. Change your dashboard's name and save it's URL or bookmark it.
 
 
 ## Disclaimer
