@@ -33,7 +33,7 @@ App Reporting Pack fetches all necessary data from Ads API and creates a central
 1. Create an [OAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent), make it of type "**External**"
 
 1. Create an [OAuth Credentials](https://console.cloud.google.com/apis/credentials/oauthclient) - **Client ID**, **Client secret** and Google Ads enabled **Refresh Token**.
-Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng) or:
+Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng) OR:
     1. Set Application type to "**Web application**"
     1. Under Authorized redirect URIs, add a line with: https://developers.google.com/oauthplayground
     1. Save and take note of the **Client ID** and **Client Secret** presented to you
