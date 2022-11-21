@@ -27,3 +27,7 @@ gcloud pubsub subscriptions create $subscription \
  --ack-deadline=600 \
  --push-endpoint=${SERVICE_URL}/run-urp \
  --push-auth-service-account=$service_account_email \
+
+
+echo -n -e "${COLOR}Extending service timeout limit..."
+gcloud run services update urp --timeout=3600 --region=${GOOGLE_CLOUD_REGION}
