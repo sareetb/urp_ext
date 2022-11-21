@@ -60,14 +60,13 @@ def home():
 @app.route("/run-urp")
 def run_urp():
     """Run the URP queries and save results to BQ."""
-    print("Request recieved. Running URP", 204)
-    return ("", 204)
-    # try:
-    #     subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
-    #     return ("", 204)
-    # except Exception as e:
-    #     print("Failed running URP", str(e))
-    #     return ("Failed running URP")
+    print("Request recieved. Running URP")
+    try:
+        subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
+        return ("", 204)
+    except Exception as e:
+        print("Failed running URP", str(e))
+        return ("Failed running URP")
     
 
 
