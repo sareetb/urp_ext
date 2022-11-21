@@ -1,24 +1,15 @@
 # App Reporting Pack
-
-## Problem statement
+***
+##### Centralized platform and dashboard for Google Ads App campaign data 
 
 Crucial information on App campaigns is scattered across various places in Google Ads UI which makes it harder to get insights into how campaign and assets perform.
-
-## Solution
-
-App Reporting Pack fetches all necessary data from Ads API and returns ready-to-use tables that show different aspects of App campaigns performance and settings.
-
-Key pillars of App Reporting Pack:
-
-*   Deep Dive Performance Analysis
-*   Creatives Insights
-*   Campaign Debugging
+App Reporting Pack fetches all necessary data from Ads API and creates a centralized dashboard showing different aspects of App campaign's performance and settings. All data is stored in BigQuery tables that can be used for any other need the client might have.
 
 
-## Deliverable
+## Deliverables
 
-Tables in BigQuery that are ready to be used to build
-a DataStudio dashboard for App Reporting Pack.
+1. A centralized dashboard with deep app campaign and assets performance views
+2. The following data tables in BigQuery that can be used independently:
 
 * `asset_performance`
 * `creative_excellence`
@@ -29,95 +20,42 @@ a DataStudio dashboard for App Reporting Pack.
 * `geo_performance`
 * `cannibalization`
 
-## Deployment
 ## Prerequisites
 
-* Google Ads API access and [google-ads.yaml](https://github.com/google/ads-api-report-fetcher/blob/main/docs/how-to-authenticate-ads-api.md#setting-up-using-google-adsyaml) file - follow documentation on [API authentication](https://github.com/google/ads-api-report-fetcher/blob/main/docs/how-to-authenticate-ads-api.md).
-* Python 3.8+
-* Access to repository configured. In order to clone this repository you need to do the following:
-    * Visit https://professional-services.googlesource.com/new-password and login with your account
-    * Once authenticated please copy all lines in box and paste them in the terminal.
-* [Service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating) created and [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating) downloaded in order to write data to BigQuery.
-    * Once you downloaded service account key export it as an environmental variable
-        ```
-        export GOOGLE_APPLICATION_CREDENTIALS=path/to/service_account.json
-        ```
+1. [A Google Ads Developer token](https://developers.google.com/google-ads/api/docs/first-call/dev-token#:~:text=A%20developer%20token%20from%20Google,SETTINGS%20%3E%20SETUP%20%3E%20API%20Center.)
 
-    * If authenticating via service account is not possible you can authenticate with the following command:
-         ```
-         gcloud auth application-default login
-         ```
+1. A new GCP project with billing account attached
 
-To setup URP, please click the blue button and follow the instructions:
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run)
+## Setup
 
-## Installation
+1. Create an [OAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent), make it of type "**External**"
 
-In order to run App Reporting Pack please follow the steps outlined below:
+1. Create an [OAuth Credentials](https://console.cloud.google.com/apis/credentials/oauthclient) - **Client ID**, **Client secret** and Google Ads enabled **Refresh Token**.
+Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng) or:
+    1. Set Application type to "**Web application**"
+    1. Under Authorized redirect URIs, add a line with: https://developers.google.com/oauthplayground
+    1. Save and take note of the **Client ID** and **Client Secret** presented to you
+    1. Go to [OAuth2 Playground](https://developers.google.com/oauthplayground/#step1&scopes=https%3A//www.googleapis.com/auth/adwords&url=https%3A//&content_type=application/json&http_method=GET&useDefaultOauthCred=checked&oauthEndpointSelect=Google&oauthAuthEndpointValue=https%3A//accounts.google.com/o/oauth2/v2/auth&oauthTokenEndpointValue=https%3A//oauth2.googleapis.com/token&includeCredentials=unchecked&accessTokenType=bearer&autoRefreshToken=unchecked&accessType=offline&forceAprovalPrompt=checked&response_type=code) to generate a refresh token. This link is already pre-populated with the right scope.
+    1. On the right side under settings, in "OAuth Client ID" add your client ID and under "OAuth Client secret" add your client secret
+    1. Click "Authorize APIs and sign-in with a user that has access to your Google Ads account"
+    1. Click "Exchange authorization code for tokens"
+    1. Take not of the "Refresh Token"
 
-* clone this repository `git clone https://professional-services.googlesource.com/solution/uac-reporting-pack`
-* configure virtual environment and install a single dependency:
-    ```
-    python -m venv app-reporting-pack
-    source app-reporting-pack/bin/activate
-    pip install -r requirements.txt
-    ```
+1. Click the big blue button to deploy:
 
-## Usage
+   [![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?revision=sso)
 
-### Running queries locally
+1. Choose the Google Cloud Project you created for this tool
 
-In order to generate all necessary tables for App Reporting Pack please run `run-local.sh` script in a terminal:
+1. Select the region where you want to deploy
 
-```shell
-bash run-local.sh
-```
+1. When prompted, paste in your client ID, client secre, refresh token, developer token and MCC ID
 
-It will guide you through a series of questions to get all necessary parameters to run the scripts:
+1. Wait for the deployment to finish. Once finished you will be given your ***URL***
 
-* `account_id` - id of Google Ads MCC account (no dashes, 111111111 format)
-* `BigQuery project_id` - id of BigQuery project where script will store the data (i.e. `my_project`)
-* `BigQuery dataset` - id of BigQuery dataset where script will store the data (i.e. `my_dataset`)
-* `start date` - first date from which you want to get performance data (i.e., `2022-01-01`)
-* `end date` - last date from which you want to get performance data (i.e., `2022-12-31`)
-* `Ads config` - path to `google-ads.yaml` file.
+1. Click on "Run URP" to manually run the queries and create tables for the first time. The queries are then scheduled to run daily automatically
 
-After the initial run of `run-local.sh` command it will generate `app_reporting_pack.yaml` config file with all necessary information used for future runs.
-When you run `bash run-local.sh` next time it will automatically pick up created configuration.
-
-When running `run-local.sh` scripts you can specify two options which are useful when running queries periodically (i.e. as a cron job):
-
-* `-c <config>`- path to `app_reporting_pack.yaml` config file. Comes handy when you have multiple config files or the configuration is located outside of current folder.
-* `-q` - skips all confirmation prompts and starts running scripts based on config file.
-
-
-### Running queries in a Docker container
-
-You can run App Reporting Pack queries inside a Docker container.
-
-1. Build `app-reporting-pack` image:
-
-```
-sudo docker build . -t app-reporting-pack
-```
-
-It will create `app-reporting-pack` docker image you can use later on. It expects the following input:
-
-* `google-ads.yaml` - absolute path to `google-ads.yaml` file
-* `service_account.json` - absolute path to service account json file
-* `config.yaml` - absolute path to YAML config (to generate it please run `run-local.sh` script from *Running locally* section.
-
-2. Run:
-
-```
-sudo docker run \
-    -v /path/to/google-ads.yaml:/google-ads.yaml \
-    -v /path/to/service_account.json:/service_account.json \
-    -v /path/to/apr-config.yaml:/config.yaml \
-    app-reporting-pack
-```
-
-> Don't forget to change /path/to/google-ads.yaml and /path/to/service_account.json with valid paths.
+1. Wait a few minutes and click "Create Dashboard". This will create your own private copy of the URP dashboard. Once you are done save the dashboard's URL or bookmark it.
 
 
 ## Disclaimer
