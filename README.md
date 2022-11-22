@@ -1,5 +1,5 @@
 # App Reporting Pack
-***
+
 ##### Centralized platform and dashboard for Google Ads App campaign data 
 
 Crucial information on App campaigns is scattered across various places in Google Ads UI which makes it harder to get insights into how campaign and assets perform.
@@ -51,7 +51,7 @@ Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng)
 
 1. Select the region where you want to deploy
 
-1. When prompted, paste in your client ID, client secre, refresh token, developer token and MCC ID
+1. When prompted, paste in your client ID, client secret, refresh token, developer token and MCC ID
 
 1. Wait for the deployment to finish. Once finished you will be given your ***URL***
 
