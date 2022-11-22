@@ -59,11 +59,11 @@ def run_urp():
     """Run the URP queries and save results to BQ."""
     print("Request recieved. Running URP")
     try:
-        # subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
+        subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
         return ("", 204)
     except Exception as e:
         print("Failed running URP", str(e))
-        return ("Failed running URP")
+        return ("Failed running URP", 400)
 
 
 
