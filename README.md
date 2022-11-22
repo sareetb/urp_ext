@@ -55,9 +55,9 @@ Follow instructions in [this video](https://www.youtube.com/watch?v=KFICa7Ngzng)
 
 1. Wait for the deployment to finish. Once finished you will be given your ***URL***
 
-1. Click on "Run URP" to manually run the queries and create tables for the first time. The queries are then scheduled to run daily automatically
+1. Click on "Run Queries" to manually run the queries and create tables for the first time. The queries are then scheduled to run daily automatically
 
-1. Wait a few minutes and click "Create Dashboard". This will create your own private copy of the URP dashboard. Change your dashboard's name and save it's URL or bookmark it.
+1. Wait a few minutes and click "Create Dashboard". This will create your own private copy of the App Reporting Pack dashboard. Change your dashboard's name and save it's URL or bookmark it.
 
 
 ## Disclaimer

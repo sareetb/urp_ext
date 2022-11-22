@@ -15,7 +15,7 @@ _DATASOURCES_DICT = {
 
 _REPORT_ID = "187f1f41-16bc-434d-8437-7988bed6e8b9"
 _REPORT_NAME = "New Report"
-_DATASET_ID = "urp_target"
+_DATASET_ID = "app-reporting-pack_target"
 _BASE_URL = "https://datastudio.google.com/reporting/create?"
 _CONFIG_FILE_PATH = "./config.yaml"
 
@@ -38,12 +38,12 @@ def home():
     return f"""<!DOCTYPE html>
                 <html>
                     <head>
-                        <title>URP</title>
+                        <title>App Reporting Pack</title>
                     </head>
-                    <p>Click on "Run URP" to manually trigger the queries. </br>Click on "Create Dashboard" to create your private copy of URP dashboard.<p>
+                    <p>Click on "Run Queries" to manually trigger the queries. </br>Click on "Create Dashboard" to create your private copy of App Reporting Pack dashboard.<p>
                     <body>
-                        <button onclick="window.location.href='run-urp';alert('Running URP')">
-                            Run URP
+                        <button onclick="window.location.href='run-queries';alert('Running Queries')">
+                            Run Queries
                         </button>
                     </body>
                     <body>
@@ -54,16 +54,16 @@ def home():
                 </html>"""
 
 
-@app.route("/run-urp", methods=["POST", "GET"])
-def run_urp():
-    """Run the URP queries and save results to BQ."""
-    print("Request recieved. Running URP")
+@app.route("/run-queries", methods=["POST", "GET"])
+def run_queries():
+    """Run the App Reporting Pack queries and save results to BQ."""
+    print("Request recieved. Running queries")
     try:
         subprocess.check_call(["./run-docker.sh", "google_ads_queries/*/*.sql", "bq_queries", "/google-ads.yaml"])
         return ("", 204)
     except Exception as e:
-        print("Failed running URP", str(e))
-        return ("Failed running URP", 400)
+        print("Failed running queries", str(e))
+        return ("Failed running queries", 400)
 
 
 

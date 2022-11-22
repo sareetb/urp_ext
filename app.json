@@ -1,5 +1,5 @@
 {
-    "name": "urp",
+    "name": "app-reporting-pack",
     "env": {
         "OAUTH_CLIENT_ID": {
             "description": "OAuth 2.0 Client ID",
