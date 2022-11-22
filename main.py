@@ -15,7 +15,7 @@ _DATASOURCES_DICT = {
 
 _REPORT_ID = "187f1f41-16bc-434d-8437-7988bed6e8b9"
 _REPORT_NAME = "New Report"
-_DATASET_ID = "app-reporting-pack_target"
+_DATASET_ID = "app_reporting_pack_target"
 _BASE_URL = "https://datastudio.google.com/reporting/create?"
 _CONFIG_FILE_PATH = "./config.yaml"
 
