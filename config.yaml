@@ -8,7 +8,7 @@ gaarf:
   account: 'MCC-ID'
   params:
     macro:
-      start_date: ":YYYYMMDD-40"
+      start_date: ":YYYYMMDD-91"
       end_date: ":YYYYMMDD-1"
 gaarf-bq:
   project: YOUR-BQ-PROJECT
